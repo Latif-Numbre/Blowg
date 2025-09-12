@@ -66,7 +66,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
             {post.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
-                {post.tags.map((tag) => (
+                {post.tags.map((tag: string) => (
                   <Badge key={tag} variant="secondary">
                     #{tag}
                   </Badge>

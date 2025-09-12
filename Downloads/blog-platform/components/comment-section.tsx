@@ -145,6 +145,23 @@ export function CommentSection({ postId, currentUser }: CommentSectionProps) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
+  // useEffect(() => {
+  //   const fetchComments = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const response = await fetch(`/api/posts/${postId}/comments`);
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setComments(data.results || []);
+  //       }
+  //     } catch (err) {
+  //       setError("Failed to load comments.");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchComments();
+  // }, [postId]);
   useEffect(() => {
     fetchComments();
   }, [postId]);
@@ -159,7 +176,7 @@ export function CommentSection({ postId, currentUser }: CommentSectionProps) {
       const data = response.data;
       // console.log(data);
       if (response.status === 200) {
-        setComments(data.results);
+        setComments(data.results || []);
       }
     } catch (error) {
       console.error("Error fetching comments:", error);
@@ -170,22 +187,23 @@ export function CommentSection({ postId, currentUser }: CommentSectionProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newComment.trim() || !currentUser) return;
+    if (!newComment.trim()) return;
     console.log("Submitting comment:", { newComment, replyingTo });
 
     setSubmitting(true);
     setError("");
 
     try {
-      const response = await axios.post(
-        `${API_URL}blog/posts/${postId}/comments/`,
-        {
+      const response = await fetch(`/api/posts/${postId}/comments/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           content: newComment,
           parentId: replyingTo,
-        }
-      );
+        }),
+      });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         setNewComment("");
         setReplyingTo(null);
         // In a real app, you'd refresh comments or add optimistically
@@ -205,7 +223,7 @@ export function CommentSection({ postId, currentUser }: CommentSectionProps) {
     // Focus on comment input (you could scroll to it too)
 
     try {
-      const res = await fetch(`api/posts/${postId}/comments/`, {
+      const res = await fetch(`/api/posts/${postId}/comments/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
