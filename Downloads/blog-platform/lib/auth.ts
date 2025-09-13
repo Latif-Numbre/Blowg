@@ -170,3 +170,25 @@ export async function getPost(postId: string) {
   const res = await axios.get(`${API_URL}blog/posts/${postId}/`);
   return res.data;
 }
+
+export async function getUserProfile(username: string) {
+  const access = await getAccessToken();
+  if (!access) {
+    redirect("/auth/signin");
+  }
+  const res = await axios.get(`${API_URL}blog/users/${username}/`, {
+    headers: { Authorization: `Bearer ${access}` },
+  });
+  return res.data;
+}
+
+export async function getUserPosts(username: string) {
+  const access = await getAccessToken();
+  if (!access) {
+    redirect("/auth/signin");
+  }
+  const res = await axios.get(`${API_URL}blog/users/${username}/posts/`, {
+    headers: { Authorization: `Bearer ${access}` },
+  });
+  return res.data;
+}

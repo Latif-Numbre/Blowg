@@ -21,7 +21,7 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-background">
       <Header user={user} />
 
-      <main className="container py-8">
+      <main className="container py-8 px-8">
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Main Feed */}
           <div className="lg:col-span-3">

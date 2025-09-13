@@ -30,7 +30,7 @@ export default async function PostPage({ params }: PostPageProps) {
     <div className="min-h-screen bg-background">
       <Header user={user} />
 
-      <main className="container py-8 max-w-4xl">
+      <main className="container py-8 max-w-4xl px-8">
         <article>
           {/* Post Header */}
           <div className="mb-8">
